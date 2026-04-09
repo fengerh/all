@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>我的项目导航 · GitHub 作品集</title>
+  <!-- Font Awesome 图标库 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      background: linear-gradient(145deg, #f5f7fc 0%, #eef1f8 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 24px 16px;
+    }
+
+    .container {
+      max-width: 1200px;
+      width: 100%;
+    }
+
+    /* 头部区域 */
+    .header {
+      text-align: center;
+      margin-bottom: 48px;
+    }
+
+    .avatar {
+      width: 96px;
+      height: 96px;
+      background: white;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      box-shadow: 0 12px 24px -8px rgba(0, 20, 60, 0.15);
+      border: 2px solid rgba(255,255,255,0.8);
+    }
+
+    .avatar i {
+      font-size: 48px;
+      color: #3a4f6d;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 650;
+      color: #1e293b;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #5e718d;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .subtitle i {
+      color: #5b6cf7;
+      opacity: 0.8;
+    }
+
+    .github-link {
+      color: #3a4f6d;
+      text-decoration: none;
+      font-weight: 500;
+      background: rgba(255,255,255,0.6);
+      padding: 6px 16px;
+      border-radius: 40px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255,255,255,0.8);
+      transition: 0.2s;
+    }
+
+    .github-link:hover {
+      background: white;
+      box-shadow: 0 6px 12px -6px rgba(0,0,0,0.1);
+    }
+
+    /* 项目卡片网格 */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 24px;
+    }
+
+    .project-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      border-radius: 28px;
+      padding: 28px 24px;
+      border: 1px solid rgba(255,255,255,0.9);
+      box-shadow: 0 16px 32px -12px rgba(0, 20, 40, 0.08);
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: inherit;
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+    }
+
+    .project-card:hover {
+      transform: translateY(-4px);
+      background: white;
+      box-shadow: 0 24px 40px -16px rgba(27, 50, 90, 0.15);
+      border-color: #cdd9f0;
+    }
+
+    .card-icon {
+      width: 56px;
+      height: 56px;
+      background: linear-gradient(135deg, #5b6cf7 0%, #8296ff 100%);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 22px;
+      color: white;
+      font-size: 28px;
+      box-shadow: 0 10px 18px -6px rgba(91, 108, 247, 0.3);
+    }
+
+    .project-title {
+      font-size: 1.5rem;
+      font-weight: 650;
+      color: #0f1a2e;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .project-title i {
+      font-size: 1rem;
+      color: #5b6cf7;
+      opacity: 0.7;
+      transition: transform 0.2s;
+    }
+
+    .project-card:hover .project-title i {
+      transform: translateX(4px);
+    }
+
+    .project-desc {
+      color: #44566c;
+      line-height: 1.5;
+      font-size: 0.95rem;
+      margin-bottom: 16px;
+      flex: 1;
+    }
+
+    .project-tag {
+      display: inline-block;
+      background: #e6ebf5;
+      padding: 4px 12px;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #2e4a7c;
+      letter-spacing: 0.2px;
+      align-self: flex-start;
+    }
+
+    /* 页脚 */
+    .footer {
+      margin-top: 56px;
+      text-align: center;
+      color: #62748c;
+      font-size: 0.9rem;
+    }
+
+    .footer a {
+      color: #3f5b8c;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    /* 移动端优化 */
+    @media (max-width: 640px) {
+      h1 { font-size: 1.9rem; }
+      .projects-grid { gap: 18px; }
+      .project-card { padding: 22px 20px; }
+      .avatar { width: 80px; height: 80px; border-radius: 24px; }
+      .avatar i { font-size: 40px; }
+      
+      /* 👇 新增：手机上隐藏卡片图标 */
+      .card-icon {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <!-- 头部：可以替换为你的 GitHub 信息 -->
+  <div class="header">
+    <div class="avatar">
+      <i class="fas fa-code-branch"></i> <!-- 或放头像图片 -->
+    </div>
+    <h1>我的项目实验室</h1>
+    <div class="subtitle">
+      <span><i class="far fa-folder-open"></i> 6 个开源项目</span>
+      <span>·</span>
+      <a class="github-link" href="#" target="_blank" id="githubProfileLink">
+        <i class="fab fa-github"></i> GitHub 主页
+      </a>
+    </div>
+  </div>
+
+  <!-- 项目卡片网格，通过 JavaScript 动态渲染，方便修改 -->
+  <div class="projects-grid" id="projectsGrid"></div>
+
+  <!-- 页脚 -->
+  <div class="footer">
+    <p>✨ 点击卡片直接访问项目 · <a href="#" id="footerRepoLink">页面源码</a> ✨</p>
+    <p style="margin-top: 16px; opacity: 0.7;">Made with <i class="fas fa-heart" style="color: #e05b6c;"></i> for GitHub</p>
+  </div>
+</div>
+
+<script>
+  (function() {
+    // ---------- 请在这里修改你的项目信息 ----------
+    const githubUsername = "fengerh";        // 例如 "octocat"
+    const projects = [
+      {
+        name: "📘 标签笔记",
+        description: "标签化笔记管理 · 支持导入导出与编辑，移动端适配。",
+        url: "https://fengerh.github.io/Label_notebook/",  // 替换为实际链接
+        icon: "fa-pen-fancy",
+        tag: "笔记工具"
+      },
+      {
+        name: "🎯 旅行账本",
+        description: "旅行账本应用，支持多人AA与本地存储，移动端适配。",
+        url: "https://fengerh.github.io/travelAA/",
+        icon: "fa-check-circle",
+        tag: "效率"
+      },
+      {
+        name: "🌦 基金组合回测",
+        description: "基金组合模拟回测工具，基于多个基金的净值测算，需要先准备基础数据。",
+        url: "https://fengerh.github.io/DCA_backtesting/",
+        icon: "fa-cloud-sun",
+        tag: "投资演示"
+      },
+      {
+        name: "🎨 川麻听牌计算器",
+        description: "根据手牌计算川麻听牌概率，支持多种牌型和规则。",
+        url: "https://fengerh.github.io/chuanma/",
+        icon: "fa-palette",
+        tag: "游戏工具"
+      },
+      {
+        name: "📊 川麻记账器",
+        description: "用于记录川麻游戏的得分和统计。",
+        url: "https://fengerh.github.io/chuanma_BILL/",
+        icon: "fa-hourglass-half",
+        tag: "游戏工具"
+      },
+      {
+        name: "🔗 干瞪眼记分器",
+        description: "基于手牌和规则的记分器。",
+        url: "https://fengerh.github.io/gandengyan_BILL/",
+        icon: "fa-link",
+        tag: "游戏工具"
+      }
+    ];
+
+    // 渲染卡片
+    const grid = document.getElementById('projectsGrid');
+    function renderCards() {
+      let html = '';
+      projects.forEach((proj, index) => {
+        html += `
+          <a class="project-card" href="${proj.url}" target="_blank" rel="noopener noreferrer">
+            <div class="card-icon">
+              <i class="fas ${proj.icon}"></i>
+            </div>
+            <div class="project-title">
+              ${proj.name}
+              <i class="fas fa-arrow-right"></i>
+            </div>
+            <div class="project-desc">${proj.description}</div>
+            <span class="project-tag">${proj.tag}</span>
+          </a>
+        `;
+      });
+      grid.innerHTML = html;
+    }
+
+    // 设置 GitHub 链接
+    function setLinks() {
+      const profileLink = document.getElementById('githubProfileLink');
+      const footerRepoLink = document.getElementById('footerRepoLink');
+      if (githubUsername && githubUsername !== '你的GitHub用户名') {
+        profileLink.href = `https://github.com/${githubUsername}`;
+        footerRepoLink.href = `https://github.com/${githubUsername}/${githubUsername}.github.io`; // 假设此页面放在用户主页仓库
+      } else {
+        profileLink.href = "#";
+        footerRepoLink.href = "#";
+        profileLink.addEventListener('click', (e) => { e.preventDefault(); alert('请在代码中设置你的 GitHub 用户名'); });
+      }
+    }
+
+    renderCards();
+    setLinks();
+
+    // 可选：显示项目计数
+    document.querySelector('.subtitle span:first-child').innerHTML = `<i class="far fa-folder-open"></i> ${projects.length} 个开源项目`;
+  })();
+</script>
+</body>
+</html>
