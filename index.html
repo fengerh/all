@@ -2,9 +2,9 @@
 <html lang="zh">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的GitHub项目导航 v20260507.2100</title>
-  <!-- Font Awesome 图标库 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>我的GitHub项目导航 v20260601.1610</title>
+  <!-- Font Awesome 6 -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -112,7 +112,6 @@
       border-radius: 40px;
       cursor: pointer;
       transition: all 0.15s;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
     }
 
     .filter-btn:hover {
@@ -130,7 +129,7 @@
     /* 项目卡片网格 */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 24px;
     }
 
@@ -177,18 +176,25 @@
       margin-bottom: 8px;
       display: flex;
       align-items: center;
+      flex-wrap: wrap;
       gap: 8px;
+    }
+
+    .title-main {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
       flex-wrap: wrap;
     }
 
-    .project-title i {
+    .title-main i {
       font-size: 1rem;
       color: #5b6cf7;
       opacity: 0.7;
       transition: transform 0.2s;
     }
 
-    .project-card:hover .project-title i {
+    .project-card:hover .title-main i {
       transform: translateX(4px);
     }
 
@@ -196,8 +202,18 @@
       color: #44566c;
       line-height: 1.5;
       font-size: 0.95rem;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       flex: 1;
+    }
+
+    /* 卡片底部：左侧标签 + 右侧热度 */
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
     }
 
     .project-tag {
@@ -209,18 +225,44 @@
       font-weight: 600;
       color: #2e4a7c;
       letter-spacing: 0.2px;
-      align-self: flex-start;
+    }
+
+    .hotness-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      backdrop-filter: blur(2px);
+      padding: 4px 12px;
+      border-radius: 60px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      transition: all 0.1s;
+
+        background: rgba(230, 240, 255, 0.7);  /* 淡蓝灰 */
+        color: #2c4b7c;                       /* 深蓝灰 */
+        border: 1px solid rgba(100, 140, 200, 0.2);
+
+    }
+
+    .hotness-badge i {
+      font-size: 0.7rem;
+      color: #5b6cf7;
+    }
+
+    .hotness-badge .count {
+      font-weight: 700;
+      margin-left: 2px;
     }
 
     /* 版本号样式 */
     .version-badge {
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 500;
       background: #eef2ff;
       color: #5b6cf7;
       padding: 2px 8px;
       border-radius: 30px;
-      margin-left: 4px;
+      white-space: nowrap;
     }
 
     .version-badge.unknown {
@@ -242,29 +284,35 @@
       font-weight: 500;
     }
 
+    /* 重置按钮小工具 */
+    .reset-stats {
+      font-size: 0.7rem;
+      background: transparent;
+      border: 1px solid #cbd5e1;
+      border-radius: 30px;
+      padding: 4px 12px;
+      margin-left: 12px;
+      cursor: pointer;
+      color: #5e718d;
+      transition: 0.2s;
+    }
+    .reset-stats:hover {
+      background: rgba(255,255,240,0.8);
+      border-color: #f97316;
+      color: #c2410c;
+    }
+
     /* 移动端优化 */
     @media (max-width: 640px) {
       h1 { font-size: 1.9rem; }
-      .projects-grid { gap: 18px; }
+      .projects-grid { gap: 18px; grid-template-columns: 1fr; }
       .project-card { padding: 22px 20px; }
       .avatar { width: 80px; height: 80px; border-radius: 24px; }
       .avatar i { font-size: 40px; }
-      
-      .card-icon {
-        display: none;
-      }
-
-      .filter-bar {
-        margin: 16px 0 20px 0;
-      }
-      .filter-btn {
-        font-size: 0.7rem;
-        padding: 5px 12px;
-      }
-      
-      .project-title {
-        font-size: 1.3rem;
-      }
+      .card-icon { display: none; }
+      .filter-btn { font-size: 0.7rem; padding: 5px 12px; }
+      .project-title { font-size: 1.3rem; }
+      .card-footer { flex-direction: row; flex-wrap: wrap; }
     }
   </style>
 </head>
@@ -273,15 +321,16 @@
   <!-- 头部 -->
   <div class="header">
     <div class="avatar">
-      <i class="fas fa-code-branch"></i>
+      <i class="fas fa-chart-line"></i>
     </div>
     <h1>我的项目实验室</h1>
     <div class="subtitle">
-      <span id="projectCountText"><i class="far fa-folder-open"></i> 6 个开源项目</span>
+      <span id="projectCountText"><i class="far fa-folder-open"></i> 加载中...</span>
       <span>·</span>
       <a class="github-link" href="#" target="_blank" id="githubProfileLink">
         <i class="fab fa-github"></i> GitHub 主页
       </a>
+      <button id="resetHotnessBtn" class="reset-stats" title="重置所有项目的点击热度 (仅本地)"><i class="fas fa-trash-alt"></i> 重置热度</button>
     </div>
   </div>
 
@@ -290,7 +339,6 @@
 
   <!-- 项目卡片网格 -->
   <div class="projects-grid" id="projectsGrid">
-    <!-- 初始加载中提示（很快会被替换） -->
     <div style="grid-column:1/-1; text-align:center; padding:40px; color:#7f8fa3;">
       <i class="fas fa-spinner fa-pulse"></i> 加载项目中...
     </div>
@@ -298,33 +346,25 @@
 
   <!-- 页脚 -->
   <div class="footer">
-    <p>✨ 点击卡片直接访问项目 · <a href="#" id="footerRepoLink">页面源码</a> ✨</p>
-    <p style="margin-top: 16px; opacity: 0.7;">Made with <i class="fas fa-heart" style="color: #e05b6c;"></i> for GitHub</p>
+    <p>✨ 点击卡片即增加热度 · 高频项目自动靠前 ✨</p>
+    <p>📊 使用次数基于本地记录 | <a href="#" id="footerRepoLink">页面源码</a></p>
+    <p style="margin-top: 16px; opacity: 0.7;">Made with <i class="fas fa-fire" style="color: #f97316;"></i> 动态排序</p>
   </div>
 </div>
 
 <script>
   (function() {
-    // ---------- 项目配置 ----------
+    // ---------- 1. 项目配置 ----------
     const githubUsername = "fengerh";
-    const projects = [
+    const projectsRaw = [
       {
         name: "📓 标签云笔记",
         description: "标签化笔记管理 · 支持导入导出与编辑，移动端适配。",
         url: "https://fengerh.github.io/Label_notebook_cloud/",
-        versionUrl: "https://fengerh.github.io/Label_notebook_cloud/index.html",  // 新增：版本获取地址
+        versionUrl: "https://fengerh.github.io/Label_notebook_cloud/index.html",
         icon: "fa-pen-fancy",
         tag: "效率工具"
       },
-      // {
-      //   name: "📒 标签笔记（本地版）",
-      //   description: "标签化笔记管理 · 支持导入导出与编辑，移动端适配。",
-      //   url: "https://fengerh.github.io/Label_notebook_local/",
-      //   versionUrl: "https://fengerh.github.io/Label_notebook_local/index.html",  // 新增：版本获取地址
-      //   icon: "fa-pen-fancy",
-      //   tag: "效率工具"
-      // },
-      
       {
         name: "🧾 旅行账本",
         description: "旅行账本应用，支持多人AA与本地存储，移动端适配。",
@@ -333,7 +373,6 @@
         icon: "fa-wallet",
         tag: "效率工具"
       },
-      
       {
         name: "📈 基金组合回测",
         description: "基金组合模拟回测工具，基于多个基金的净值测算，需要先准备基础数据。",
@@ -366,7 +405,6 @@
         icon: "fa-chess-queen",
         tag: "游戏工具"
       },
-      
       {
         name: "🃏 干瞪眼记分",
         description: "基于手牌和规则的记分器。",
@@ -375,42 +413,86 @@
         icon: "fa-dice",
         tag: "游戏工具"
       }
-      
-      
-      // 新增项目示例：
-      // {
-      //   name: "🍅 番茄钟",
-      //   description: "简洁的番茄工作法计时器",
-      //   url: "https://fengerh.github.io/pomodoro/",
-      //   versionUrl: "https://fengerh.github.io/pomodoro/index.html",
-      //   icon: "fa-clock",
-      //   tag: "效率工具"
-      // }
     ];
 
-    // 当前选中的标签（默认全部）
+    // 存储点击热度的 key
+    const STORAGE_KEY = "project_click_heatmap";
+    // 当前选中的标签
     let currentTag = "全部";
+    // 缓存带版本号和热度值的完整项目列表 (排序后的)
+    let cachedProjectsWithMeta = null;
 
-    // ---------- 提取版本号 ----------
-    // 从<title>中提取版本号，格式如 "中文名称 v20260410.1100"
+    // ---------- 辅助函数: 获取项目唯一标识 (使用url确保稳定) ----------
+    function getProjectKey(project) {
+      return project.url; // url 是唯一的
+    }
+
+    // ---------- 读取/写入 localStorage 热度数据 ----------
+    function loadClickCounts() {
+      const stored = localStorage.getItem(STORAGE_KEY);
+      if (stored) {
+        try {
+          return JSON.parse(stored);
+        } catch(e) { console.warn(e); return {}; }
+      }
+      return {};
+    }
+
+    function saveClickCounts(countsMap) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(countsMap));
+    }
+
+    // 为每个项目附加 clickCount (从localStorage读取)
+    function attachClickCounts(projectsArr) {
+      const countsMap = loadClickCounts();
+      return projectsArr.map(proj => {
+        const key = getProjectKey(proj);
+        const clicks = countsMap[key] || 0;
+        return { ...proj, clickCount: clicks };
+      });
+    }
+
+    // 更新单个项目的点击次数 (+1) 并持久化, 同时更新内存缓存中的数值 (便于同一会话不刷新但一般跳转)
+    function incrementClickCount(projectUrl) {
+      const countsMap = loadClickCounts();
+      const newCount = (countsMap[projectUrl] || 0) + 1;
+      countsMap[projectUrl] = newCount;
+      saveClickCounts(countsMap);
+      
+      // 如果内存缓存存在，同步更新对应项目的 clickCount (确保下次筛选渲染时数据是最新的)
+      if (cachedProjectsWithMeta) {
+        const target = cachedProjectsWithMeta.find(p => p.url === projectUrl);
+        if (target) {
+          target.clickCount = newCount;
+        }
+      }
+      return newCount;
+    }
+
+    // 重置所有热度
+    function resetAllHotness() {
+      if (confirm("⚠️ 重置后所有项目的使用次数将归零，排序将恢复默认。确定重置吗？")) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({}));
+        // 重新加载页面以刷新完整数据 (重新获取版本 + 热度归零)
+        window.location.reload();
+      }
+    }
+
+    // ---------- 版本号提取逻辑 (原有逻辑) ----------
     function extractVersionFromTitle(title) {
       const match = title.match(/v(\d{8}\.\d{4})/);
       return match ? match[1] : null;
     }
 
-    // 获取单个项目的版本号
     async function fetchProjectVersion(versionUrl) {
       try {
-        // 加时间戳避免缓存
         const url = `${versionUrl}?_t=${Date.now()}`;
         const response = await fetch(url);
         if (!response.ok) return null;
-        
         const html = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const title = doc.querySelector('title')?.textContent || '';
-        
         return extractVersionFromTitle(title);
       } catch (error) {
         console.warn(`获取版本失败: ${versionUrl}`, error);
@@ -418,9 +500,8 @@
       }
     }
 
-    // 批量获取所有项目的版本号，返回 projects 的深拷贝并附加 version 字段
-    async function fetchAllVersions() {
-      const promises = projects.map(async (project) => {
+    async function fetchAllVersions(projectsBase) {
+      const promises = projectsBase.map(async (project) => {
         if (!project.versionUrl) return { ...project, version: null };
         const version = await fetchProjectVersion(project.versionUrl);
         return { ...project, version };
@@ -428,21 +509,29 @@
       return Promise.all(promises);
     }
 
-    // ---------- 标签筛选相关 ----------
+    // ---------- 排序核心: 按热度(clickCount)降序, 同热度保持原始配置顺序(索引靠前优先) ----------
+    function sortByHotness(projectsArray) {
+      // 深拷贝一份再排序，保持原始顺序稳定 (同热度时保留原顺序)
+      const copy = [...projectsArray];
+      copy.sort((a, b) => {
+        if (a.clickCount !== b.clickCount) {
+          return b.clickCount - a.clickCount; // 降序 高热度在前
+        }
+        // 同热度保持原始顺序: 通过原始projectsRaw中的索引来稳定
+        const idxA = projectsRaw.findIndex(p => p.url === a.url);
+        const idxB = projectsRaw.findIndex(p => p.url === b.url);
+        return idxA - idxB;
+      });
+      return copy;
+    }
+
+    // ---------- 获取唯一标签(基于当前完整项目列表) ----------
     function getUniqueTags(projectsData) {
       const tags = projectsData.map(p => p.tag);
       return ["全部", ...new Set(tags)];
     }
 
-    // 根据当前标签过滤（projectsData 已经包含版本信息）
-    function getFilteredProjects(projectsData) {
-      if (currentTag === "全部") {
-        return projectsData;
-      }
-      return projectsData.filter(p => p.tag === currentTag);
-    }
-
-    // ---------- 渲染筛选按钮 ----------
+    // ---------- 渲染筛选按钮 (附带高亮当前标签) ----------
     function renderFilterBar(projectsData) {
       const filterBar = document.getElementById('filterBar');
       const tags = getUniqueTags(projectsData);
@@ -454,81 +543,148 @@
       filterBar.innerHTML = html;
     }
 
-    // ---------- 渲染卡片（带版本号） ----------
+    // 根据当前标签获取过滤后的列表，并对过滤后的数据按热度排序（高热度优先）
+    function getFilteredAndSorted(projectsData) {
+      let filtered = projectsData;
+      if (currentTag !== "全部") {
+        filtered = projectsData.filter(p => p.tag === currentTag);
+      }
+      // 对筛选结果再次按热度排序 (保持整体高频优先)
+      return sortByHotness(filtered);
+    }
+
+    // 渲染卡片：展示版本号 + 热度次数 + 动态排序
     function renderCards(projectsData) {
       const grid = document.getElementById('projectsGrid');
-      const filtered = getFilteredProjects(projectsData);
+      const filteredSorted = getFilteredAndSorted(projectsData);
       
-      // 更新项目计数
+      // 更新项目计数显示
       const countSpan = document.getElementById('projectCountText');
-      countSpan.innerHTML = `<i class="far fa-folder-open"></i> ${filtered.length} 个项目`;
-
-      if (filtered.length === 0) {
+      countSpan.innerHTML = `<i class="far fa-folder-open"></i> ${filteredSorted.length} 个项目 (按热度排序)`;
+      
+      if (filteredSorted.length === 0) {
         grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#7f8fa3;">✨ 这个标签下暂时没有项目</div>`;
         return;
       }
-
+      
       let html = '';
-      filtered.forEach(proj => {
+      filteredSorted.forEach(proj => {
+        // 版本号显示
         const versionHtml = proj.version 
           ? `<span class="version-badge">v${proj.version}</span>`
           : `<span class="version-badge unknown">版本未知</span>`;
         
+        // 热度显示: 根据点击次数展示不同图标热情
+        let hotIcon = '<i class="far fa-star"></i>';
+        let hotClass = '';
+        if (proj.clickCount > 0) {
+          if (proj.clickCount >= 5) hotIcon = '<i class="fas fa-fire"></i>';
+          else if (proj.clickCount >= 2) hotIcon = '<i class="fas fa-chart-simple"></i>';
+          else hotIcon = '<i class="fas fa-eye"></i>';
+        }
+        const hotDisplay = proj.clickCount > 0 
+          ? `<span class="hotness-badge">${hotIcon} <span class="count">${proj.clickCount}</span> 次</span>`
+          : `<span class="hotness-badge"><i class="far fa-clock"></i> 待探索</span>`;
+        
         html += `
-          <a class="project-card" href="${proj.url}" target="_blank" rel="noopener noreferrer">
+          <a class="project-card" href="${proj.url}" target="_blank" rel="noopener noreferrer" data-project-url="${proj.url}">
             <div class="card-icon">
               <i class="fas ${proj.icon}"></i>
             </div>
             <div class="project-title">
-              ${proj.name}
-              ${versionHtml}
-              <i class="fas fa-arrow-right"></i>
+              <span class="title-main">
+                ${proj.name}
+                ${versionHtml}
+                <i class="fas fa-arrow-right"></i>
+              </span>
             </div>
             <div class="project-desc">${proj.description}</div>
-            <span class="project-tag">${proj.tag}</span>
+            <div class="card-footer">
+              <span class="project-tag">${proj.tag}</span>
+              ${hotDisplay}
+            </div>
           </a>
         `;
       });
       grid.innerHTML = html;
     }
-
-    // ---------- 整体渲染（异步获取版本后） ----------
-    async function renderAll() {
-      // 先显示加载状态（已经在 HTML 中预置了）
-      
-      // 获取所有项目的版本号
-      const projectsWithVersions = await fetchAllVersions();
-      
-      // 渲染筛选栏和卡片
-      renderFilterBar(projectsWithVersions);
-      renderCards(projectsWithVersions);
+    
+    // ---------- 整体数据流：获取版本 -> 附加热度 -> 全局排序 -> 渲染界面 ----------
+    async function initDataAndRender() {
+      try {
+        // 1. 获取所有项目的版本号（异步）
+        const projectsWithVersion = await fetchAllVersions(projectsRaw);
+        // 2. 附加本地点击热度
+        let projectsWithHeat = attachClickCounts(projectsWithVersion);
+        // 3. 全局热度排序 (最高频靠前)
+        const sortedByHotness = sortByHotness(projectsWithHeat);
+        // 存入全局缓存 (已经是按热度排序后的完整列表)
+        cachedProjectsWithMeta = sortedByHotness;
+        
+        // 4. 渲染筛选栏 (基于排序后完整列表)
+        renderFilterBar(cachedProjectsWithMeta);
+        // 5. 渲染卡片 (内部会根据 currentTag 再过滤+排序保持高热度在前)
+        renderCards(cachedProjectsWithMeta);
+      } catch (err) {
+        console.error("数据加载失败", err);
+        const grid = document.getElementById('projectsGrid');
+        grid.innerHTML = `<div style="grid-column:1/-1; text-align:center; padding:40px; color:#e05b6c;">⚠️ 加载失败，请刷新页面重试</div>`;
+      }
     }
-
-    // ---------- 事件监听：标签点击切换（重新获取版本？不用，我们已经有了 projectsWithVersions，但当前实现需要缓存） ----------
-    // 为了在切换标签时不用重新 fetch，我们把带版本的数据存在全局变量里
-    let cachedProjectsWithVersions = null;
-
-    async function init() {
-      cachedProjectsWithVersions = await fetchAllVersions();
-      renderFilterBar(cachedProjectsWithVersions);
-      renderCards(cachedProjectsWithVersions);
+    
+    // 处理卡片点击：增加热度计数，并允许正常跳转 (不阻塞)
+    function bindCardClickTracking() {
+      // 利用事件委托监听整个projects-grid区域
+      const gridContainer = document.getElementById('projectsGrid');
+      if (!gridContainer) return;
       
-      // 监听标签切换
-      document.addEventListener('click', function(e) {
+      gridContainer.addEventListener('click', (e) => {
+        // 查找实际点击的卡片 a 元素
+        let targetCard = e.target.closest('.project-card');
+        if (!targetCard) return;
+        
+        const projectUrl = targetCard.getAttribute('data-project-url');
+        if (!projectUrl) return;
+        
+        // 增加点击计数 (存储+更新内存)
+        incrementClickCount(projectUrl);
+        
+        // 注意: 这里不进行页面重绘，因为即将跳转到目标页面
+        // 用户从其他页面返回后，页面会重新加载并读取最新热度，自动重新排序
+        // 为了让体验更细腻: 更新内存后，如果用户在同一页面停留(极少情况)不跳转? 不会有影响，因为点击本身会跳转。
+        // 极少数情况（比如按住Ctrl+点击新标签页）也会计数；完美符合频率统计。
+        // 后续正常跳转由a标签原生href完成，无需额外操作
+      });
+    }
+    
+    // 标签筛选监听 (通过全局委托)
+    function bindFilterEvents() {
+      document.addEventListener('click', (e) => {
         const btn = e.target.closest('.filter-btn');
         if (!btn) return;
         const tag = btn.getAttribute('data-tag');
-        if (tag) {
+        if (tag && cachedProjectsWithMeta) {
           currentTag = tag;
-          if (cachedProjectsWithVersions) {
-            renderFilterBar(cachedProjectsWithVersions);  // 更新 active 状态
-            renderCards(cachedProjectsWithVersions);
-          }
+          // 更新筛选按钮样式
+          renderFilterBar(cachedProjectsWithMeta);
+          // 重新渲染卡片 (基于新的标签过滤 + 热度排序)
+          renderCards(cachedProjectsWithMeta);
         }
       });
     }
-
-    // ---------- 设置 GitHub 链接 ----------
+    
+    // 重置热度按钮事件
+    function bindResetButton() {
+      const resetBtn = document.getElementById('resetHotnessBtn');
+      if (resetBtn) {
+        resetBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          resetAllHotness();
+        });
+      }
+    }
+    
+    // 设置GitHub链接 (原逻辑)
     function setLinks() {
       const profileLink = document.getElementById('githubProfileLink');
       const footerRepoLink = document.getElementById('footerRepoLink');
@@ -538,13 +694,20 @@
       } else {
         profileLink.href = "#";
         footerRepoLink.href = "#";
-        profileLink.addEventListener('click', (e) => { e.preventDefault(); alert('请在代码中设置你的 GitHub 用户名'); });
+        profileLink.addEventListener('click', (e) => { e.preventDefault(); alert('请在代码中设置 GitHub 用户名'); });
       }
     }
-
-    // ---------- 启动 ----------
-    setLinks();
-    init();
+    
+    // 显示初始加载完之后的实际状态
+    async function main() {
+      setLinks();
+      await initDataAndRender();   // 获取版本+热度+排序并渲染
+      bindCardClickTracking();     // 监听卡片点击增加热度
+      bindFilterEvents();          // 标签切换
+      bindResetButton();           // 重置热度按钮
+    }
+    
+    main();
   })();
 </script>
 </body>
